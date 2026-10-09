@@ -201,7 +201,7 @@ function linearMinus(vars, marks=2){
     steps:[`Start with: ${f}`,`Add ${b} to both sides: ${L} + ${b} = ${a}${T}`,`Divide both sides by ${a}: ${ans}`]};
 }
 function twoTermTarget(vars, marks=2){
-  const [L,U,T]=vars, a=nz(), b=nz();
+  const [L,U,T]=vars, a=nz(), b=pick([2,3,4,5,6,7,8,9].filter(v=>v!==a));
   const f=`${L} = ${a}${U} + ${b}${T}`;
   const ans=`${T} = ${frac(`${L} − ${a}${U}`,b)}`;
   return {formula:f,target:T,marks,answer:ans,
@@ -209,7 +209,7 @@ function twoTermTarget(vars, marks=2){
     steps:[`Start with: ${f}`,`Subtract ${a}${U}: ${L} − ${a}${U} = ${b}${T}`,`Divide by ${b}: ${ans}`]};
 }
 function sumTarget(vars, marks=2){
-  const [L,T,U]=vars, a=nz(), b=nz();
+  const [L,T,U]=vars, a=nz(), b=pick([2,3,4,5,6,7,8,9].filter(v=>v!==a));
   const f=`${L} = ${a}${T} + ${b}${U}`;
   const ans=`${T} = ${frac(`${L} − ${b}${U}`,a)}`;
   return {formula:f,target:T,marks,answer:ans,
@@ -221,7 +221,7 @@ function squarePlus(vars, marks=2){
   const f=`${L} = ${sq(T)} + ${k}`;
   const ans=`${T} = ${pm}${sqrt(`${L} − ${k}`)}`;
   return {formula:f,target:T,marks,answer:ans,
-    wrongs:[`${T} = ${sqrt(`${L} − ${k}`)}`,`${T} = ${pm}${sqrt(`${L} + ${k}`)}`,`${T} = ${pm}(${L} − ${k})<sup>2</sup>`],
+    wrongs:[`${T} = ${pm}${sqrt(L)} − ${k}`,`${T} = ${pm}${sqrt(`${L} + ${k}`)}`,`${T} = ${pm}(${L} − ${k})<sup>2</sup>`],
     steps:[`Start with: ${f}`,`Subtract ${k}: ${sq(T)} = ${L} − ${k}`,`Take the square root of both sides: ${ans}`]};
 }
 function suvAt(vars, marks=2){
@@ -249,7 +249,7 @@ function sqrtLinear(vars, marks=3){
     steps:[`Start with: ${f}`,`Square both sides: ${sq(A)} = ${frac(`${B} + ${add}`,den)}`,`Multiply by ${den}: ${den}${sq(A)} = ${B} + ${add}`,`Subtract ${add}: ${ans}`]};
 }
 function fractionCoeff(vars, marks=2, numerator=1){
-  const [Y,X]=vars, den=nz(2,9), c=posConst(), num=numerator===1?1:R(2,den-1);
+  const [Y,X]=vars, c=posConst(), [num,den]=numerator===1?[1,nz(2,9)]:pick([[2,3],[3,4],[2,5],[3,5],[4,5],[5,6],[2,7],[3,7],[4,7],[5,7],[6,7],[3,8],[5,8],[7,8],[2,9],[4,9],[5,9],[7,9],[8,9]]);
   const f=`${Y} = ${frac(num,den)}${X} + ${c}`;
   const ans=num===1?`${X} = ${den}(${Y} − ${c})`:`${X} = ${frac(den,num)}(${Y} − ${c})`;
   const wrongs=num===1?
@@ -259,7 +259,7 @@ function fractionCoeff(vars, marks=2, numerator=1){
     steps:[`Start with: ${f}`,`Subtract ${c}: ${Y} − ${c} = ${frac(num,den)}${X}`,num===1?`Multiply by ${den}: ${ans}`:`Multiply by ${frac(den,num)}: ${ans}`]};
 }
 function linearZero(vars, marks=2){
-  const [X,Y]=vars, a=nz(), b=nz(), c=posConst();
+  const [X,Y]=vars, a=nz(), b=pick([2,3,4,5,6,7,8,9].filter(v=>v!==a)), c=posConst();
   const f=`${a}${X} + ${b}${Y} + ${c} = 0`;
   const ans=`${X} = ${frac(`−${b}${Y} − ${c}`,a)}`;
   return {formula:f,target:X,marks,answer:ans,
@@ -271,15 +271,15 @@ function cubeMinus(vars, marks=2){
   const f=`${Y} = ${cube(X)} − ${c}`;
   const ans=`${X} = ${cbrt(`${Y} + ${c}`)}`;
   return {formula:f,target:X,marks,answer:ans,
-    wrongs:[`${X} = ${cbrt(`${Y} − ${c}`)}`,`${X} = ${sqrt(`${Y} + ${c}`)}`,`${X} = ${cube(`${Y} + ${c}`)}`],
+    wrongs:[`${X} = ${cbrt(`${Y} − ${c}`)}`,`${X} = ${sqrt(`${Y} + ${c}`)}`,`${X} = ${cube(`(${Y} + ${c})`)}`],
     steps:[`Start with: ${f}`,`Add ${c}: ${cube(X)} = ${Y} + ${c}`,`Take the cube root: ${ans}`]};
 }
 function linearFraction(vars, marks=2){
-  const [Y,X]=vars, a=nz(), b=posConst(), den=nz();
+  const [Y,X]=vars, a=nz(), b=posConst(), den=pick([2,3,4,5,6,7,8,9].filter(v=>v!==a));
   const f=`${Y} = ${frac(`${a}${X} + ${b}`,den)}`;
   const ans=`${X} = ${frac(`${den}${Y} − ${b}`,a)}`;
   return {formula:f,target:X,marks,answer:ans,
-    wrongs:[`${X} = ${frac(`${den}${Y} + ${b}`,a)}`,`${X} = ${frac(`${Y} − ${b}`,`${a}${den}`)}`,`${X} = ${frac(`${a}${Y} − ${b}`,den)}`],
+    wrongs:[`${X} = ${frac(`${den}${Y} + ${b}`,a)}`,`${X} = ${frac(`${Y} − ${b}`,a*den)}`,`${X} = ${frac(`${a}${Y} − ${b}`,den)}`],
     steps:[`Start with: ${f}`,`Multiply by ${den}: ${den}${Y} = ${a}${X} + ${b}`,`Subtract ${b}: ${den}${Y} − ${b} = ${a}${X}`,`Divide by ${a}: ${ans}`]};
 }
 function bracketLinear(vars, marks=2){
@@ -299,7 +299,7 @@ function targetInDen(vars, marks=2){
     steps:[`Start with: ${f}`,`Multiply by ${B}: ${A}${B} = ${c} + ${C}`,`Divide by ${A}: ${ans}`]};
 }
 function sqrtFraction(vars, marks=3){
-  const [D,H]=vars, num=nz(2,7), den=nz(2,7);
+  const [D,H]=vars, num=nz(2,7), den=pick([2,3,4,5,6,7].filter(v=>v!==num));
   const f=`${D} = ${sqrt(frac(`${num}${H}`,den))}`;
   const ans=`${H} = ${frac(`${den}${sq(D)}`,num)}`;
   return {formula:f,target:H,marks,answer:ans,
@@ -394,6 +394,7 @@ function toggleSolution(){
   }
   document.getElementById("solutionBody").innerHTML=
     `<div><strong>Correct answer: ${current.correctLetter}</strong></div>` +
+    `<ol style="margin:8px 0 0 22px">${current.steps.map(st=>`<li>${st}</li>`).join("")}</ol>` +
     `<div style="margin-top:8px;font-size:1.06rem">${current.answer}</div>`;
   s.style.display="block";
   btn.textContent="Hide Solution";
